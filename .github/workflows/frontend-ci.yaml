@@ -1,0 +1,77 @@
+name: Frontend CI
+
+on:
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+
+  lint:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+
+    - name: Install dependencies
+      working-directory: starter/frontend
+      run: npm ci
+
+    - name: Run linter
+      working-directory: starter/frontend
+      run: npm run lint
+
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+
+    - name: Install dependencies
+      working-directory: starter/frontend
+      run: npm ci
+
+    - name: Run tests
+      working-directory: starter/frontend
+      run: npm test
+
+  build:
+    
+    needs: [lint, test]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        working-directory: starter/frontend
+        run: npm ci
+
+      - name: Build and push docker image
+        working-directory: starter/frontend
+        run: docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=114439736588.dkr.ecr.us-east-1.amazonaws.com/frontend:latest .
