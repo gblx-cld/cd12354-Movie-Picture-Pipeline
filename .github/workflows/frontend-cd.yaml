@@ -71,6 +71,10 @@ jobs:
     needs: build
 
     steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Configure Kubeconfig
         run: |
           aws eks update-kubeconfig --name moviepicture --region ${{ env.AWS_REGION }}
