@@ -105,7 +105,7 @@ jobs:
     - name: Deploy Docker image to Amazon EKS
       working-directory: starter/backend/k8s
       run: |
-        aws eks update-kubeconfig --name moviepicture --region ${{ env.AWS_REGION }}
+        aws eks update-kubeconfig --name cluster --region ${{ env.AWS_REGION }}
         kustomize edit set image backend=${{ env.ECR_URI }}/${{ env.ECR_REPO }}:${{ github.sha }}
         kustomize build | kubectl apply -f -
      
