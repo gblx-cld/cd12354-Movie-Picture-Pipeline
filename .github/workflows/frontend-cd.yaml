@@ -75,9 +75,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Configure Kubeconfig
+      - name: Configure kubeconfig
         run: |
           aws eks update-kubeconfig --name moviepicture --region ${{ env.AWS_REGION }}
+
+      - name: Set AWS credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region ${{ env.AWS_REGION }}
 
       - name: Deploy Docker image to Amazon EKS
         working-directory: starter/frontend/k8s
