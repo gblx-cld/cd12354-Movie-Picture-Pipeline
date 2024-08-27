@@ -59,6 +59,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      ECR_LOCATION: '114439736588.dkr.ecr.us-east-1.amazonaws.com/frontend:latest'
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -74,4 +77,4 @@ jobs:
 
       - name: Build and push docker image
         working-directory: starter/frontend
-        run: docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=114439736588.dkr.ecr.us-east-1.amazonaws.com/frontend:latest .
+        run: docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=$ECR_LOCATION .
