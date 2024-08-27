@@ -14,7 +14,6 @@ env:
   ECR_URI: '114439736588.dkr.ecr.us-east-1.amazonaws.com'
   ECR_REPO: 'frontend'
   API_URL: 'http://localhost:5000'
-  EKS_CLUSTER: 'moviepicture'
 
 jobs:
 
@@ -74,7 +73,7 @@ jobs:
     steps:
       - name: Configure Kubeconfig
         run: |
-          aws eks update-kubeconfig --name {{ env.EKS_CLUSTER }} --region ${{ env.AWS_REGION }}
+          aws eks update-kubeconfig --name moviepicture --region ${{ env.AWS_REGION }}
 
       - name: Deploy Docker image to Amazon EKS
         working-directory: starter/frontend/k8s
