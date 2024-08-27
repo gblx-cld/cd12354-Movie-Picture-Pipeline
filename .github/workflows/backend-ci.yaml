@@ -1,4 +1,4 @@
-name: Frontend CI
+name: Backend CI
 
 on:
 
@@ -18,18 +18,21 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v3
 
-    - name: Use Node.js
-      uses: actions/setup-node@v3
+    - name: Use Python
+      uses: actions/setup-python@v4
       with:
-        node-version: '18.x'
+        python-version: "3.11"
+
+    - name: Install pipenv
+      run: pip install pipenv
 
     - name: Install dependencies
-      working-directory: starter/frontend
-      run: npm ci
+      working-directory: starter/backend
+      run: pipenv install
 
     - name: Run linter
-      working-directory: starter/frontend
-      run: npm run lint
+      working-directory: starter/backend
+      run: pipenv run lint
 
 
   test:
@@ -40,18 +43,21 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v3
 
-    - name: Use Node.js
-      uses: actions/setup-node@v3
+    - name: Use Python
+      uses: actions/setup-python@v4
       with:
-        node-version: '18.x'
+        python-version: "3.11"
+
+    - name: Install pipenv
+      run: pip install pipenv
 
     - name: Install dependencies
-      working-directory: starter/frontend
-      run: npm ci
+      working-directory: starter/backend
+      run: pipenv install
 
     - name: Run tests
-      working-directory: starter/frontend
-      run: npm test
+      working-directory: starter/backend
+      run: pipenv run test
 
   build:
     
@@ -60,12 +66,12 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ECR_LOCATION: '114439736588.dkr.ecr.us-east-1.amazonaws.com/frontend:latest'
+      ECR_LOCATION: '114439736588.dkr.ecr.us-east-1.amazonaws.com/backend:latest'
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
 
       - name: Build and push docker image
-        working-directory: starter/frontend
+        working-directory: starter/backend
         run: docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=$ECR_LOCATION .
