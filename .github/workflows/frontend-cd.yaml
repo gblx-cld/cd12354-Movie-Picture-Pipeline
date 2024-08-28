@@ -13,7 +13,7 @@ env:
   AWS_REGION: 'us-east-1'
   ECR_URI: '114439736588.dkr.ecr.us-east-1.amazonaws.com'
   ECR_REPO: 'frontend'
-  API_URL: 'http://localhost:5000'
+  API_URL: 'a00562c5098f842b49a56c19c0adb8de-624402968.us-east-1.elb.amazonaws.com'
 
 jobs:
 
@@ -63,7 +63,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    needs: test
+    needs: [lint, test]
 
     steps:
 
